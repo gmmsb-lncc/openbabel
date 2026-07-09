@@ -6,6 +6,32 @@ endif()
 project(openbabel)
 set(CMAKE_MODULE_PATH ${openbabel_SOURCE_DIR}/cmake/modules)
 
+# ── DockThor static/minimal build profile ───────────────────────────────────
+# One opt-in switch that carries the whole configuration the DockThor Suite
+# needs, so its ExternalProject passes only -DDOCKTHOR_STATIC=ON instead of a
+# dozen -D flags. Defined here — before the individual option() calls below —
+# so pre-seeding the cache makes those option() definitions no-ops. That is
+# also what keeps WITH_COORDGEN ON even though BUILD_SHARED is OFF (the stock
+# logic would otherwise default WITH_COORDGEN to OFF for a static build).
+# Default OFF: a plain build of this fork is completely unaffected.
+option(DOCKTHOR_STATIC "Static, minimal build tuned for the DockThor Suite" OFF)
+if(DOCKTHOR_STATIC)
+  set(BUILD_SHARED                OFF CACHE BOOL "" FORCE)  # static libopenbabel.a
+  set(BUILD_SHARED_LIBS           OFF CACHE BOOL "" FORCE)
+  set(MAEPARSER_BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)  # static libmaeparser.a
+  set(WITH_MAEPARSER              ON  CACHE BOOL "" FORCE)  # Maestro format support
+  set(WITH_COORDGEN               ON  CACHE BOOL "" FORCE)  # keep ON despite static
+  set(BUILD_GUI                   OFF CACHE BOOL "" FORCE)
+  set(BUILD_TESTING               OFF CACHE BOOL "" FORCE)
+  set(ENABLE_TESTS                OFF CACHE BOOL "" FORCE)
+  set(PYTHON_BINDINGS             OFF CACHE BOOL "" FORCE)
+  set(RUN_SWIG                    OFF CACHE BOOL "" FORCE)
+  set(WITH_INCHI                  OFF CACHE BOOL "" FORCE)
+  # Collect openbabel + maeparser + coordgen archives in one known dir; from
+  # the consumer's side this is <ExternalProject binary dir>/lib.
+  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib" CACHE PATH "" FORCE)
+endif()
+
 set (CMAKE_CXX_STANDARD 11)
 
 if(COMMAND cmake_policy)
