@@ -3,7 +3,7 @@ if(MINIMAL_BUILD)
         obabel
   )
 else(MINIMAL_BUILD)
-  find_package(Boost COMPONENTS program_options iostreams)
+  find_package(Boost)
   if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS} ${Boost_INCLUDE_DIR})
   endif()
@@ -122,7 +122,7 @@ else(BUILD_SHARED)
       # Default static build using GNU-like compiler.
       #
       if (NOT APPLE)
-            set(CMAKE_CXX_FLAGS "-static ${CMAKE_CXX_FLAGS}")
+            # set(CMAKE_CXX_FLAGS "-static ${CMAKE_CXX_FLAGS}")
       endif()
       # APPLE doesn't use -static
     endif(BUILD_MIXED)
@@ -132,10 +132,10 @@ else(BUILD_SHARED)
   add_executable(obabel obabel.cpp)
   target_link_libraries(obabel ${libs})
 
-  if(NOT BUILD_MIXED)
-    # Prevent -Wl,-Bdynamic from being added to the end of the link line.
-    set_target_properties(obabel PROPERTIES LINK_SEARCH_END_STATIC TRUE)
-  endif(NOT BUILD_MIXED)
+  # if(NOT BUILD_MIXED)
+  #   # Prevent -Wl,-Bdynamic from being added to the end of the link line.
+  #   set_target_properties(obabel PROPERTIES LINK_SEARCH_END_STATIC TRUE)
+  #   # endif(NOT BUILD_MIXED)
 
   install(TARGETS obabel
           RUNTIME DESTINATION bin

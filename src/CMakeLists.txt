@@ -3,7 +3,7 @@ set(SOVERSION 8)
 set(LIBRARY_VERSION 8.0.0)
 
 
-find_package(Boost 1.45.0 COMPONENTS system)
+find_package(Boost 1.45.0)
 
 
 

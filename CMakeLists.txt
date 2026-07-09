@@ -10,6 +10,9 @@ set (CMAKE_CXX_STANDARD 11)
 
 if(COMMAND cmake_policy)
   cmake_policy(SET CMP0003 NEW)
+  if(POLICY CMP0167)
+    cmake_policy(SET CMP0167 NEW)
+  endif()
 endif()
 
 include (CheckCXXCompilerFlag)
@@ -134,7 +137,7 @@ else()
     set(CMAKE_EXE_LINKER_FLAGS_RELEASE "/INCREMENTAL:NO /NODEFAULTLIB:MSVCRT")
     # note: static libraries are specified when running cmake
   else()
-    set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
+    # set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
   endif()
 endif()
 
@@ -316,7 +319,7 @@ if(MINGW)
   set (CMAKE_EXE_LINKER_FLAGS "-Wl,--enable-auto-import ${CMAKE_EXE_LINKER_FLAGS}")
 endif()
 
-find_package(Boost COMPONENTS program_options iostreams)
+find_package(Boost)
   if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS} ${Boost_INCLUDE_DIR})
  endif()
@@ -480,7 +483,7 @@ include_directories(${openbabel_BINARY_DIR}/include
 )
 
 
-find_package(Boost COMPONENTS filesystem iostreams unit_test_framework)
+find_package(Boost)
 if(Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS} ${Boost_INCLUDE_DIR})
   option(WITH_MAEPARSER "Build Maestro support" ON)
