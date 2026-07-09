@@ -6,7 +6,14 @@ scripts/python/openbabel/openbabel.py
 scripts/java/openbabel.jar
 scripts/php/openbabel.php
 scripts/php/php_openbabel.h
-external
+# Ignore everything under external/ except the vendored, build-time deps
+external/*
+!external/maeparser-v1.3.3/
+external/maeparser-v1.3.3/*
+!external/maeparser-v1.3.3/maeparser/
+!external/coordgen-d20e735d96480385b2e257522288004038a08cc9/
+external/coordgen-d20e735d96480385b2e257522288004038a08cc9/*
+!external/coordgen-d20e735d96480385b2e257522288004038a08cc9/coordgen/
 
 # build
 build
